@@ -86,47 +86,73 @@ More on that in the [full playbook](https://github.com/claytonfarr/ralph-playboo
 
 ## Let Ralph Ralph
 
-Lean into the LLM's ability to self-identify, self-correct, and self-improve.
+This is where Ralph asks something of you: **trust**.
 
-Ralph can:
-- Update its own implementation plan
-- Discover bugs and document them
+Geoff: "You need to trust Ralph to decide what's the most important thing to implement. This is full hands-off vibe coding that will test the bounds of what you consider 'responsible engineering'."
+
+The prompt doesn't prescribe *which* task to do — it says "choose the most important thing." Ralph decides. And it turns out LLMs are surprisingly good at reasoning about priority and next steps when given specs, a plan, and the codebase to study.
+
+Ralph can also:
+- Update its own implementation plan as it learns
+- Discover bugs and document them for future loops
 - Learn operational patterns and update AGENTS.md
 - Even create new specs if functionality is missing
 
 The circularity is intentional. **Eventual consistency through iteration.**
 
-The plan is disposable. Geoff: "I have deleted the TODO list multiple times." If Ralph is going off track, throw it out and regenerate. That's the escape hatch.
+Geoff: "Building software with Ralph requires a great deal of faith and a belief in eventual consistency. Ralph will test you." Any problem created by AI can be resolved through a different series of prompts — more loops, different angles.
 
-**When Ralph fails a specific way, add a sign.** Prompts evolve through observing failure patterns.
+**The plan is disposable.** Geoff: "I have deleted the TODO list multiple times." If Ralph is going off track, throw it out and regenerate. That's the escape hatch. Regeneration is cheap.
 
-Geoff's critical guardrail: *"Before making changes, search codebase (don't assume not implemented) using parallel subagents."*
+**Tune like a guitar.** Instead of prescribing everything upfront, you observe and adjust reactively. When Ralph fails a specific way, add a sign.
+
+But signs aren't just prompt text. They're anything Ralph can discover:
+- **Prompt guardrails** — explicit instructions like "don't assume not implemented"
+- **AGENTS.md** — operational learnings about how to build/test
+- **Utilities in your codebase** — when you add a pattern to stdlib, Ralph discovers it and follows it
+
+The code itself is a sign. This connects back to upstream steering — your stdlib shapes generation because Ralph studies it and mimics those patterns.
+
+Geoff's critical prompt guardrail: *"Before making changes search codebase (don't assume an item is not implemented) using parallel subagents."*
 
 If you wake up to find Ralph duplicating work, tune this instruction. This nondeterminism is Ralph's Achilles' heel — and the primary thing you'll iterate on.
 
-Sit outside the loop. Observe. Adjust.
+The mindset shift: You're not controlling Ralph. You're setting constraints, observing behavior, and tuning.
 
 ---
 
-## Use Protection
+## Outside the Loop
+
+You've moved out of the loop. Ralph is doing the work. But you're not gone — you're *on* the loop.
+
+**Your job now is observation and course correction.**
+
+Especially early on, sit and watch. What patterns emerge? Where does Ralph go wrong? What signs does he need? The prompts you start with won't be the prompts you end with — they evolve through observed failure patterns.
+
+This requires visibility into what Ralph is doing:
+- Stream output so you can watch in real-time
+- Review commits and plan updates between loops
+- Check the implementation plan for drift or circular work
+
+When something goes wrong, you have escape hatches:
+- `Ctrl+C` stops the loop
+- `git reset --hard` reverts uncommitted changes
+- Regenerate the plan if trajectory goes off track
+
+And remember: **use protection.**
 
 Ralph requires `--dangerously-skip-permissions` to operate autonomously. This bypasses all permission prompts — so a sandbox becomes your only security boundary.
 
 Philosophy: **"It's not if it gets popped, it's when. What's the blast radius?"**
 
-Running without isolation exposes credentials, browser cookies, SSH keys, and access tokens on your machine.
-
-Run in isolated environments with minimum viable access:
+Running without isolation exposes credentials, browser cookies, SSH keys, and access tokens on your machine. Run in isolated environments with minimum viable access:
 - Only the API keys and deploy keys needed for the task
 - No access to private data beyond requirements
 - Restrict network connectivity where possible
 
 Options: Docker sandboxes locally, E2B/Modal for remote/production.
 
-Escape hatches:
-- `Ctrl+C` stops the loop
-- `git reset --hard` reverts uncommitted changes
-- Regenerate plan if trajectory goes wrong
+You're outside the loop, but you're still the engineer. Ralph does the work. You observe, protect, and tune.
 
 ---
 
@@ -140,7 +166,7 @@ I've been noodling on several extensions to the core approach. Still determining
 
 **[Non-Deterministic Backpressure](https://github.com/claytonfarr/ralph-playbook#non-deterministic-backpressure)** — LLM-as-judge for subjective criteria (tone, aesthetics, UX). Binary pass/fail reviews that iterate until pass.
 
-**[Work Branches](https://github.com/claytonfarr/ralph-playbook#work-branches)** — Scope planning per branch instead of filtering at runtime. One scoped plan per body of work.
+**[Work Branches](https://github.com/claytonfarr/ralph-playbook#work-branches)** — If you want parallel workstreams, scope at plan creation (deterministic), not task selection (non-deterministic). Asking Ralph to "filter to feature X" at runtime is unreliable. Instead: create a scoped plan per branch upfront, then Ralph picks "most important" from an already-focused plan.
 
 **[JTBD → Story Map → SLC](https://github.com/claytonfarr/ralph-playbook#jtbd--story-map--slc-release)** — Reframe topics as user activities, map into a journey, slice horizontally for Simple/Lovable/Complete releases.
 
