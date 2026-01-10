@@ -2,7 +2,7 @@
 
 December 2025 boiled [Ralph's](https://ghuntley.com/ralph/) powerful yet dumb little face to the top of most AI-related timelines.
 
-I always try to pay attention to the crazy-smart insights [@GeoffreyHuntley](https://x.com/GeoffreyHuntley) shares, but I can't say Ralph really clicked for me this summer. Now, all of the recent hubbub has made it hard to ignore.
+I try to pay attention to the crazy-smart insights [@GeoffreyHuntley](https://x.com/GeoffreyHuntley) shares, but I can't say Ralph really clicked for me this summer. Now, all of the recent hubbub has made it hard to ignore.
 
 [@mattpocockuk](https://x.com/mattpocockuk/status/2008200878633931247) and [@ryancarson](https://x.com/ryancarson/status/2008548371712135632)'s overviews helped a lot - right until Geoff came in and [said 'nah'](https://x.com/GeoffreyHuntley/status/2008731415312236984).
 
@@ -12,11 +12,13 @@ I always try to pay attention to the crazy-smart insights [@GeoffreyHuntley](htt
 
 Many folks seem to be getting good results with various shapes - but I wanted to read the tea leaves as closely as possible from the person who not only captured this approach but also has had the most ass-time in the seat putting it through its paces.
 
-So I dug in to really _RTFM_ on [recent videos](<(https://www.youtube.com/watch?v=O2bBWDoxO4s)>) and Geoff's [original post](https://ghuntley.com/ralph/) to try and untangle for myself what works best.
+So I dug in to really _RTFM_ on [recent videos](https://www.youtube.com/watch?v=O2bBWDoxO4s) and Geoff's [original post](https://ghuntley.com/ralph/) to try and untangle for myself what works best.
 
 Below is the result - a (likely OCD-fueled) Ralph Playbook that organizes the miscellaneous details for putting this all into practice w/o hopefully neutering it in the process.
 
 > Digging into all of this has also brought to mind some possibly valuable [additional enhancements](#enhancements) to the core approach that aim to stay aligned with the guidelines that make Ralph work so well.
+
+> [!TIP] > [📖 View as Formatted Guide →](https://ClaytonFarr.github.io/ralph-playbook/)
 
 ---
 
@@ -180,7 +182,7 @@ Ralph's effectiveness comes from how much you trust it do the right thing (event
 
 ### 🚦 Move Outside the Loop
 
-To get the most out of Ralph, you need to get out of his way. Ralph should be doing _all_ of the work. You're job is now to sit on the loop, not in it - to engineer the setup and environment that will allow Ralph to succeed.
+To get the most out of Ralph, you need to get out of his way. Ralph should be doing _all_ of the work, including decided which planned work to implement next and how to implement it. Your job is now to sit on the loop, not in it - to engineer the setup and environment that will allow Ralph to succeed.
 
 _Observe and course correct_ – especially early on, sit and watch. What patterns emerge? Where does Ralph go wrong? What signs does he need? The prompts you start with won't be the prompts you end with - they evolve through observed failure patterns.
 
@@ -210,7 +212,7 @@ And remember, _the plan is disposable:_
 
 ### Outer Loop Control
 
-Geoff's initial minimal form:
+Geoff's initial minimal form of `loop.sh` script:
 
 ```bash
 while :; do cat PROMPT.md | claude ; done
@@ -454,7 +456,7 @@ Single, canonical "heart of the loop" - a concise, operational "how to run/build
 - NOT a changelog or progress diary
 - Describes how to build/run the project
 - Captures operational learnings that improve the loop
-- Keep brief (~60 lines max)
+- Keep brief (~60 lines)
 
 Status, progress, and planning belong in `IMPLEMENTATION_PLAN.md`, not here.
 
@@ -522,20 +524,20 @@ _No pre-specified template_ - let Ralph/LLM dictate and manage format that works
 
 Application source code and shared utilities/components.
 
-Referenced in [PROMPT.md](#promptmd) templates for orientation steps.
+Referenced in `PROMPT.md` templates for orientation steps.
 
 ---
 
 ## Enhancements?
 
-Still determining the value/viability of these possible enhancements, but the opportunities sound promising.
+I'm (Clayton) still determining the value/viability of these possible enhancements, but the opportunities sound promising.
 
 I'm still determining the value/viability of these, but the opportunities sound promising:
 
 - [Claude's AskUserQuestionTool for Planning](#use-claudes-askuserquestiontool-for-planning) - use Claude's built-in interview tool to systematically clarify JTBD, edge cases, and acceptance criteria for specs.
 - [Acceptance-Driven Backpressure](#acceptance-driven-backpressure) - Derive test requirements during planning from acceptance criteria. Prevents "cheating" - can't claim done without appropriate tests passing.
 - [Non-Deterministic Backpressure](#non-deterministic-backpressure) - Using LLM-as-judge for tests against subjective tasks (tone, aesthetics, UX). Binary pass/fail reviews that iterate until pass.
-- [Ralph Friendly Work Branches](#ralph-friendly-work-branches) - Asking Ralph to "filter to feature X" at runtime is unreliable. Instead, create scoped plan per branch upfront.
+- [Ralph-Friendly Work Branches](#ralph-friendly-work-branches) - Asking Ralph to "filter to feature X" at runtime is unreliable. Instead, create scoped plan per branch upfront.
 - [JTBD → Story Map → SLC Release](#jtbd--story-map--slc-release) - Push the power of "Letting Ralph Ralph" to connect JTBD's audience and activities to Simple/Lovable/Complete releases.
 
 ---
@@ -550,7 +552,7 @@ _Invoke:_ "Interview me using AskUserQuestion to understand [JTBD/topic/acceptan
 
 Claude will ask targeted questions to clarify requirements and ensure alignment before producing `specs/*.md` files.
 
-_Inspiration_ - [Thariq's X post](https://x.com/trq212/status/2005315275026260309)):
+_Flow:_
 
 1. Start with known information →
 2. _Claude interviews via AskUserQuestion_ →
@@ -560,11 +562,13 @@ _Inspiration_ - [Thariq's X post](https://x.com/trq212/status/200531527502626030
 
 No code or prompt changes needed - this simply enhances Phase 1 using existing Claude Code capabilities.
 
+_Inspiration_ - [Thariq's X post](https://x.com/trq212/status/2005315275026260309):
+
 ---
 
 ### Acceptance-Driven Backpressure
 
-_The Insight:_ Geoff's Ralph implicitly connects specs → implementation → tests through emergent iteration. This enhancement would make that connection _explicit_ by deriving test requirements during planning, creating a direct line from "what success looks like" to "what verifies it."
+Geoff's Ralph _implicitly_ connects specs → implementation → tests through emergent iteration. This enhancement would make that connection _explicit_ by deriving test requirements during planning, creating a direct line from "what success looks like" to "what verifies it."
 
 This enhancement connects acceptance criteria (in specs) directly to test requirements (in implementation plan), improving backpressure quality by:
 
@@ -675,7 +679,7 @@ Some acceptance criteria resist programmatic validation:
 
 These require human-like judgment but need backpressure to meet acceptance criteria during building loop.
 
-_Possible Solution:_ Add LLM-as-Judge tests as backpressure
+_Solution:_ Add LLM-as-Judge tests as backpressure with binary pass/fail.
 
 LLM reviews are non-deterministic (same artifact may receive different judgments across runs). This aligns with Ralph philosophy: "deterministically bad in an undeterministic world." The loop provides eventual consistency through iteration—reviews run until pass, accepting natural variance.
 
@@ -802,7 +806,7 @@ _Discovery, not documentation:_ Ralph learns LLM review patterns from `llm-revie
 
 ---
 
-### Ralph Friendly Work Branches
+### Ralph-Friendly Work Branches
 
 _The Critical Principle:_ Geoff's Ralph works from a single, disposable plan where Ralph picks "most important." To use branches with Ralph while maintaining this pattern, you must scope at plan creation, not at task selection.
 
@@ -830,7 +834,7 @@ _Terminology:_ "Work" is intentionally broad - it can describe features, topics 
 
 #### Workflow
 
-_1. Full Planning (on main)_
+_1. Full Planning (on main branch)_
 
 ```bash
 ./loop.sh plan
@@ -1056,8 +1060,8 @@ Geoff's [suggested workflow](https://ghuntley.com/content/images/size/w2400/2025
 
 Activities are verbs in a journey ("upload photo", "extract colors") rather than capabilities ("color extraction system"). They're naturally scoped by user intent.
 
-> Topics e.g.: "color extraction", "layout engine" → capability-oriented
-> Activities e.g.: "upload photo", "see extracted colors", "arrange layout" → journey-oriented
+> Topics: "color extraction", "layout engine" → capability-oriented
+> Activities: "upload photo", "see extracted colors", "arrange layout" → journey-oriented
 
 #### Activities → User Journey
 
