@@ -38,7 +38,7 @@ A picture is worth a thousand tweets and an hour-long video. Geoff's [overview h
 
 ### 🗘 Three Phases, Two Prompts, One Loop
 
-This diagram clarified for me that Ralph isn't just "a loop that codes." It's a funnel.
+This diagram clarified for me that Ralph isn't just "a loop that codes." It's a funnel with 3 Phases, 2 Prompts, and 1 Loop.
 
 #### Phase 1. Define Requirements (LLM conversation)
 
@@ -144,7 +144,7 @@ This informs and drives everything else:
 
 ### 🧭 Steering Ralph: Patterns + Backpressure
 
-Ralph's output is steered from two directions:
+Creating the right signals & gates to steer Ralph's successful output is **critical**. You can steer from two directions:
 
 - _Steer upstream_
   - Ensure deterministic setup:
@@ -153,8 +153,7 @@ Ralph's output is steered from two directions:
   - Your existing code shapes what gets used and generated
   - If Ralph is generating wrong patterns, add/update utilities and existing code patterns to steer it toward correct ones
 - _Steer downstream_
-  - Create backpressure to reject invalid work
-  - Wire in whatever validates your code: tests, typechecks, lints, builds, etc.
+  - Create backpressure via tests, typechecks, lints, builds, etc. that will reject invalid/unacceptable work
   - Prompt says "run tests" generically. `AGENTS .md` specifies actual commands to make backpressure project-specific
   - Backpressure can extend beyond code validation: some acceptance criteria resist programmatic checks - creative quality, aesthetics, UX feel. LLM-as-judge tests can provide backpressure for subjective criteria with binary pass/fail. ([More detailed thoughts below](#non-deterministic-backpressure) on how to approach this with Ralph.)
 - _Remind Ralph to create/use backpressure_
